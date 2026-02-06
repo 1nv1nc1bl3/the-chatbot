@@ -13,8 +13,8 @@ export default function App() {
             id: crypto.randomUUID(),
         };
         setChatMessages([...chatMessages, newMessage]);
-        console.log(newMessage);
-        console.log(allMessages);
+        // console.log(newMessage);
+        // console.log(allMessages);
     }
 
     return (
