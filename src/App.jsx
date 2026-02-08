@@ -1,12 +1,26 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 // import { allMessages } from './data';
 import ChatMessage from './components/ChatMessage';
 import ChatInput from './components/ChatInput';
+import ChatMessages from './components/ChatMessages';
+import Heading from './components/Heading';
+import SwitchButton from './components/SwitchButton';
 
 export default function App() {
+    // states, hooks
     const [chatMessages, setChatMessages] = useState([]);
     const [inputText, setInputText] = useState('');
+    // const [isButtonOn, setIsButtonOn] = useState(true);
 
+    const chatMessagesRef = useRef(null);
+    useEffect(() => {
+        const containerElement = chatMessagesRef.current;
+        if (containerElement) {
+            containerElement.scrollTop = containerElement.scrollHeight;
+        }
+    }, [chatMessages]);
+
+    // functions
     function sendMessage() {
         const newMessage = {
             message: inputText,
@@ -30,31 +44,25 @@ export default function App() {
     }
 
     return (
-        <div className='min-h-screen flex flex-col items-center justify-start bg-blue-50 pt-20 gap-10'>
-            <h1 className='text-2xl font-bold text-center'>
-                Welcome to the Chatbot Project! Send a message using the textbox
-                below.
-            </h1>
-            <h2 className='text-lg'>How can I help? Ask anything you want</h2>
-            <div className='chat-input w-xl'>
-                <ChatInput
-                    sendMessage={sendMessage}
-                    inputText={inputText}
-                    setInputText={setInputText}
+        <div className='font-poppins min-h-screen flex flex-col items-center justify-between bg-blue-50 pt-20 gap-10'>
+            <div className='flex flex-col gap-20 justify-start grow items-center'>
+                {/* <SwitchButton
+                    isButtonOn={isButtonOn}
+                    setIsButtonOn={setIsButtonOn}
+                    setChatMessages={setChatMessages}
+                /> */}
+                <Heading />
+                <ChatMessages
+                    chatMessages={chatMessages}
+                    chatMessagesRef={chatMessagesRef}
                 />
             </div>
-            <div className='chat-messages flex flex-col w-xl gap-8'>
-                {chatMessages.map((item, index) => {
-                    const { message, sender } = item;
-                    return (
-                        <ChatMessage
-                            message={message}
-                            sender={sender}
-                            key={index}
-                        />
-                    );
-                })}
-            </div>
+            <ChatInput
+                sendMessage={sendMessage}
+                inputText={inputText}
+                setInputText={setInputText}
+                chatMessages={chatMessages}
+            />
         </div>
     );
 }

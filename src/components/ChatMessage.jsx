@@ -1,25 +1,38 @@
-import React from 'react';
+import { useState } from 'react';
 import userAvatar from '../assets/user.png';
 import robotAvatar from '../assets/robot.png';
+import spinner from '../assets/loading-spinner.gif';
 
 export default function ChatMessage({ message, sender }) {
+    const [isLoading, setIsLoading] = useState(false);
+
     const messagesStyle = () => {
         return `bg-gray-200 px-10 py-3 rounded-lg text-slate-800 text-lg`;
     };
 
     return (
         <div
-            className={`flex flex-row gap-2 items-end ${sender === 'user' ? 'justify-end' : 'justify-start'}`}
+            className={`flex flex-row gap-4 items-start ${sender === 'user' ? 'justify-end' : 'justify-start'}`}
         >
             {sender === 'robot' ? (
                 <>
-                    <img src={robotAvatar} alt='robot avatar' width='50' />
-                    <span className={messagesStyle()}>{message}</span>
+                    <img
+                        src={robotAvatar}
+                        alt='robot avatar'
+                        className='w-15'
+                    />
+                    <span className={messagesStyle()}>
+                        {isLoading ? (
+                            <img src={spinner} alt='Spinner Icon' />
+                        ) : (
+                            message
+                        )}
+                    </span>
                 </>
             ) : (
                 <>
                     <span className={messagesStyle()}>{message}</span>
-                    <img src={userAvatar} alt='user avatar' width='50' />
+                    <img src={userAvatar} alt='user avatar' className='w-15' />
                 </>
             )}
         </div>
