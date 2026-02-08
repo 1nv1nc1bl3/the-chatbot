@@ -13,6 +13,7 @@ export default function ChatMessages({ chatMessages, chatMessagesRef }) {
                         message={message}
                         sender={sender}
                         key={index}
+                        chatMessages={chatMessages}
                     />
                 );
             })}

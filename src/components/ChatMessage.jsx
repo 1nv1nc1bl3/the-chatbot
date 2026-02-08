@@ -1,10 +1,20 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import userAvatar from '../assets/user.png';
 import robotAvatar from '../assets/robot.png';
 import spinner from '../assets/loading-spinner.gif';
 
-export default function ChatMessage({ message, sender }) {
-    const [isLoading, setIsLoading] = useState(false);
+export default function ChatMessage({ message, sender, chatMessages }) {
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const loader = async () => {
+            setIsLoading(true);
+            setTimeout(() => {
+                setIsLoading(false);
+            }, 1500);
+        };
+        loader();
+    }, [chatMessages]);
 
     const messagesStyle = () => {
         return `bg-gray-200 px-10 py-3 rounded-lg text-slate-800 text-lg`;
@@ -23,7 +33,11 @@ export default function ChatMessage({ message, sender }) {
                     />
                     <span className={messagesStyle()}>
                         {isLoading ? (
-                            <img src={spinner} alt='Spinner Icon' />
+                            <img
+                                style={{ height: '45px' }}
+                                src={spinner}
+                                alt='Spinner Icon'
+                            />
                         ) : (
                             message
                         )}
